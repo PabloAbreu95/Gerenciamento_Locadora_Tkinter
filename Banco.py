@@ -2,7 +2,7 @@ import sqlite3
 class Banco:
     def __init__(self):
         #Criando conexão
-        con = sqlite3.connect('filmes.db')
+        self.con = sqlite3.connect('filmes.db')
         self.createTable()
 
     def createTable(self):
@@ -19,3 +19,53 @@ class Banco:
     """)
         self.con.commit()
         c.close()
+
+    def addFilme(self, filme):
+        try:
+            c = self.con.cursor()
+            c.execute("""
+               INSERT INTO estoque(nome, sinopse, genero, datadelancamento) VALUES (?,?,?,?)
+               """, (filme.nome, filme.sinopse, filme.genero, filme.datadelancamento))
+            self.con.commit()
+            c.close()
+            return "Filme adicionado ao estoque com sucesso!"
+        except:
+            return "Ocorreu um erro ao adicionar o filme"
+
+    def updateFilme(self, id, nome, sinopse, genero, datadelancamento):
+        try:
+            c = self.con.cursor()
+            c.execute("""
+            UPDATE estoque
+            SET nome = ?,  sinopse = ?, genero = ?, datadelancamento = ? WHERE  id = ?
+            """, (nome, sinopse, genero, datadelancamento, id,))
+            self.con.commit()
+            c.close()
+            return "Filme atualizdo com sucesso"
+        except:
+            return "Ocorreu um erro ao atualizar o filme"
+
+    def deleteFilme(self, id):
+        try:
+            c = self.con.cursor()
+            c.execute("""
+            DELETE FROM estoque WHERE id = ?
+            """,(id,))
+            self.con.commit()
+            c.close()
+            return "Filme removido com sucesso!"
+        except:
+            return "Erro ao remover filme!"
+
+    def getFilme(self,id):
+        try:
+            lista = []
+            c = self.con.cursor()
+            c.execute("""
+            SELECT * FROM estoque WHERE id = ?
+            """,(id,))
+            for linha in c:
+                lista.append(linha)
+            return lista
+        except:
+            return "Erro"
