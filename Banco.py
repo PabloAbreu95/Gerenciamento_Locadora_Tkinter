@@ -1,4 +1,5 @@
 import sqlite3
+
 class Banco:
     def __init__(self):
         #Criando conexão
@@ -29,8 +30,10 @@ class Banco:
             self.con.commit()
             c.close()
             return "Filme adicionado ao estoque com sucesso!"
+
         except:
             return "Ocorreu um erro ao adicionar o filme"
+
 
     def updateFilme(self, id, nome, sinopse, genero, datadelancamento):
         try:
@@ -57,7 +60,7 @@ class Banco:
         except:
             return "Erro ao remover filme!"
 
-    def getFilme(self,id):
+    def getFilmeIp(self,id):
         try:
             lista = []
             c = self.con.cursor()
@@ -66,6 +69,9 @@ class Banco:
             """,(id,))
             for linha in c:
                 lista.append(linha)
-            return lista
+            if lista != []:
+                return lista
+            else:
+                return "Id não encontrado"
         except:
             return "Erro"
