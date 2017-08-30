@@ -1,9 +1,5 @@
-from Filmes import Filmes
 from Banco import Banco
 from tkinter import *
-from functools import partial
-import tkinter
-import tkinter.messagebox
 
 banco = Banco()
 
