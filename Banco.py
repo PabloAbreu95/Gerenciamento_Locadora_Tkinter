@@ -62,7 +62,7 @@ class Banco:
             print('falha')
             return "Erro ao remover filme!"
 
-    def getFilmeIp(self,id):
+    def getFilmeId(self,id):
         try:
             lista = []
             c = self.con.cursor()
@@ -77,3 +77,79 @@ class Banco:
                 return "Id não encontrado"
         except:
             return "Erro"
+
+    def getFilmeNome(self,nome):
+        try:
+            lista = []
+            c = self.con.cursor()
+            c.execute("""
+            SELECT * FROM estoque WHERE nome = ?
+            """,(nome,))
+            for linha in c:
+                lista.append([linha[0],linha[1]])
+            self.con.commit()
+            c.close()
+
+            if lista != []:
+                return lista
+            else:
+                return ''
+        except:
+            return ''
+
+
+    def getFilmeGenero(self,genero):
+        if genero != 'Todos':
+            try:
+                lista = []
+                c = self.con.cursor()
+                c.execute("""
+                SELECT * FROM estoque WHERE genero = ?
+                """,(genero,))
+                for linha in c:
+                    lista.append([linha[0], linha[1]])
+                if lista != []:
+                    return lista
+                else:
+                    return ""
+            except:
+                return "Erro"
+        else:
+            try:
+                lista = []
+                c = self.con.cursor()
+                c.execute("""
+                                SELECT * FROM estoque ORDER BY nome
+                                """)
+                for linha in c:
+                    lista.append([linha[0], linha[1]])
+                if lista != []:
+                    return lista
+                else:
+                    return ""
+            except:
+                return "Erro"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
