@@ -56,8 +56,10 @@ class Banco:
             """,(id,))
             self.con.commit()
             c.close()
+            print("sucesso")
             return "Filme removido com sucesso!"
         except:
+            print('falha')
             return "Erro ao remover filme!"
 
     def getFilmeIp(self,id):
