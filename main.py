@@ -17,24 +17,26 @@ class main:
         self.variablegen = StringVar(master)
         self.variablegen2 = StringVar(master) #Buscar filme(gênero)
 
-        self.container1 = Frame(master)
-        self.container1.grid(row=0,column=0)
+
 
 
         #Botão de adicionar
-        self.btnaddnovo = Button(self.container1, text = "Adicionar filme", command=self.topLevelAddFilme)
-        self.btnaddnovo.grid(row=0,column=0)
+        self.btnaddnovo = Button(master, text = "Adicionar filme", command=self.topLevelAddFilme)
+        self.btnaddnovo.grid(row=0,column=1)
 
 
         #Botão buscar
-        self.btnbuscarnovo = Button(self.container1, text = "Buscar filme", command = self.topLevelBuscarFilme)
-        self.btnbuscarnovo.grid(row=0,column=1)
+        self.btnbuscarnovo = Button(master, text = "Buscar filme", command = self.topLevelBuscarFilme)
+        self.btnbuscarnovo.grid(row=0,column=2)
 
         #Botão de gerenciamento de clientes
-        self.btncadastrarcliente = Button(self.container1, text = "Adicionar cliente", command = self.topLevelClientes)
-        self.btncadastrarcliente.grid(row=0,column=2)
+        self.btncadastrarcliente = Button(master, text = "Adicionar cliente", command = self.topLevelClientes)
+        self.btncadastrarcliente.grid(row=0,column=3)
 
-       
+
+
+
+
 
 
     def adicionarFilmeTop(self): #Função que checa possíveis erros e adiciona filme
@@ -163,15 +165,18 @@ class main:
             cliente = Clientes(self.ced1.get(),self.ced2.get(), self.ced3.get(),self.ced4.get(),self.ced5.get(),self.ced6.get(), self.ced7.get())
             if(cliente.nome != "" and cliente.cpf != "" and cliente.telefone != "" and\
                cliente.email != "" and cliente.endereco != "" and cliente.numero != "" and cliente.bairro != ""):
-                banco2.addCliente(cliente)
-                messagebox.showinfo("Log", "Cliente adicionado com sucesso!")
-                self.ced1.delete(0, END)
-                self.ced2.delete(0, END)
-                self.ced3.delete(0, END)
-                self.ced4.delete(0, END)
-                self.ced5.delete(0, END)
-                self.ced6.delete(0, END)
-                self.ced7.delete(0, END)
+                if(cliente.validarCPF() and cliente.validarNome()):
+                    banco2.addCliente(cliente)
+                    messagebox.showinfo("Log", "Cliente adicionado com sucesso!")
+                    self.ced1.delete(0, END)
+                    self.ced2.delete(0, END)
+                    self.ced3.delete(0, END)
+                    self.ced4.delete(0, END)
+                    self.ced5.delete(0, END)
+                    self.ced6.delete(0, END)
+                    self.ced7.delete(0, END)
+                else:
+                    messagebox.showinfo("Log", "Dados inválidos!")
             else:
                 messagebox.showinfo("Log", "Preenncha todos os campos!")
         except:
@@ -289,6 +294,6 @@ class main:
 
 root = Tk()
 root.wm_title("Sistema Locadora")
-root.geometry("500x400+100+100")
+root.geometry("300x300+100+100")
 main(root)
 root.mainloop()
