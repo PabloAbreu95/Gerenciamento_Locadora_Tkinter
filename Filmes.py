@@ -1,4 +1,3 @@
-from Banco import Banco
 class Filmes(object):
     def __init__(self,nome="", sinopse="", genero="", datadelancamento=""):
         self.id = id

@@ -9,7 +9,7 @@ class Banco:
     def createTable(self):
         #Criando um cursor
         c = self.con.cursor()
-        c.execute("""
+        c.execute("""    
         CREATE TABLE IF NOT EXISTS estoque(
           id INTEGER NOT NULL PRIMARY KEY,
           nome TEXT,
@@ -17,11 +17,11 @@ class Banco:
           genero TEXT,
           datadelancamento TEXT
         );
-    """)
+    """) #Tabela criada
         self.con.commit()
         c.close()
 
-    def addFilme(self, filme):
+    def addFilme(self, filme): #Adiciona um filme, é passado como argumento um objeto do tipo Filmes.
         try:
             c = self.con.cursor()
             c.execute("""
@@ -35,7 +35,7 @@ class Banco:
             return "Ocorreu um erro ao adicionar o filme"
 
 
-    def updateFilme(self, id, nome, sinopse, genero, datadelancamento):
+    def updateFilme(self, id, nome, sinopse, genero, datadelancamento): #Atualiza o filme com base no id
         try:
             c = self.con.cursor()
             c.execute("""
@@ -48,7 +48,7 @@ class Banco:
         except:
             return "Ocorreu um erro ao atualizar o filme"
 
-    def deleteFilme(self, id):
+    def deleteFilme(self, id): #Deleta o filme com base no id
         try:
             c = self.con.cursor()
             c.execute("""
@@ -62,7 +62,7 @@ class Banco:
             print('falha')
             return "Erro ao remover filme!"
 
-    def getFilmeId(self,id):
+    def getFilmeId(self,id): #Gera uma lista de filmes com base em um id específico, a lista contém todas as informações do filme.
         try:
             lista = []
             c = self.con.cursor()
@@ -78,7 +78,7 @@ class Banco:
         except:
             return "Erro"
 
-    def getFilmeNome(self,nome):
+    def getFilmeNome(self,nome): #Gera uma lista de filmes com base em um nome especifico, a lista contém id e nome.
         try:
             lista = []
             c = self.con.cursor()
@@ -98,13 +98,13 @@ class Banco:
             return ''
 
 
-    def getFilmeGenero(self,genero):
+    def getFilmeGenero(self,genero): #Gera uma lista de filme com base em um gênero específico, a lista contém id e nome.
         if genero != 'Todos':
             try:
                 lista = []
                 c = self.con.cursor()
                 c.execute("""
-                SELECT * FROM estoque WHERE genero = ?
+                SELECT * FROM estoque WHERE genero = ? ORDER BY nome
                 """,(genero,))
                 for linha in c:
                     lista.append([linha[0], linha[1]])
