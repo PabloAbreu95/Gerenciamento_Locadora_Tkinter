@@ -17,25 +17,27 @@ class main:
         self.variablegen = StringVar(master)
         self.variablegen2 = StringVar(master) #Buscar filme(gênero)
 
-
+        #Label Inicial
+        self.lb1 = Label(master,text="Sistema Automatizado Locadora", font = ('Calibri' ,'15','bold'))
+        self.lb1.pack()
 
 
         #Botão de adicionar
-        self.btnaddnovo = Button(master, text = "Adicionar filme", command=self.topLevelAddFilme)
-        self.btnaddnovo.grid(row=0,column=1)
+        self.btnaddnovo = Button(master, text = "Adicionar filme", command=self.topLevelAddFilme, width=25, font = ('Arial' ,10))
+        self.btnaddnovo.pack()
 
 
         #Botão buscar
-        self.btnbuscarnovo = Button(master, text = "Buscar filme", command = self.topLevelBuscarFilme)
-        self.btnbuscarnovo.grid(row=0,column=2)
+        self.btnbuscarnovo = Button(master, text = "Buscar filme", command = self.topLevelBuscarFilme, width=25, font = ('Arial' ,10))
+        self.btnbuscarnovo.pack()
 
-        #Botão de gerenciamento de clientes
-        self.btncadastrarcliente = Button(master, text = "Adicionar cliente", command = self.topLevelClientes)
-        self.btncadastrarcliente.grid(row=0,column=3)
+        #Botão de adição de clientes
+        self.btncadastrarcliente = Button(master, text = "Adicionar cliente", command = self.topLevelClientes, width=25, font = ('Arial' ,10))
+        self.btncadastrarcliente.pack()
 
-
-
-
+        #Botão de busca de clientes
+        self.btnbuscarclientes = Button(master, text = 'Buscar clientes', font = ('Arial',10), width=25, command = self.topLevelBuscarClientes)
+        self.btnbuscarclientes.pack()
 
 
 
@@ -126,12 +128,12 @@ class main:
         top2 = Toplevel()
         top2.title('Buscar Filme')
         top2.geometry("300x250+100+100")
-        top2['bg'] = 'blue'
 
-        self.bflb0 = Label(top2, text='Buscar Filme', font = ("Verdana", "10",  "bold"), fg="white", bg="blue")
+
+        self.bflb0 = Label(top2, text='Buscar Filme', font = ("Verdana", "10",  "bold"))
         self.bflb0.grid(row=0, column=1)
 
-        self.bflb1 = Label(top2, text='Nome', font =  ("Calibri", "12"), fg = "white", bg = "blue")
+        self.bflb1 = Label(top2, text='Nome', font =  ("Calibri", "12"))
         self.bflb1.grid(row=1, sticky=W)
 
         self.bfed1 = Entry(top2)
@@ -141,7 +143,7 @@ class main:
         self.bfbt1.bind("<Button-1>", self.refresh)
         self.bfbt1.grid(row=1, column=2)
 
-        self.bflb2 = Label(top2, text='Gênero', font =  ("Calibri", "12"), fg = "white", bg = "blue")
+        self.bflb2 = Label(top2, text='Gênero', font =  ("Calibri", "12"))
         self.bflb2.grid(row=2, column=0)
 
         lst2 = ["Todos", "Terror", "Ação", "Comédia", "Aventura", "Esportes", "Drama", "Documentário", "Animação"]
@@ -150,6 +152,8 @@ class main:
         self.bfop1['width'] = 13
         self.bfop1['borderwidth'] = 2
         self.bfop1.grid(row=2, column=1)
+
+
 
 
         self.bflbox1 = Listbox(top2)
@@ -162,19 +166,23 @@ class main:
     #Função para adicionar cliente
     def adicionarCliente(self):
         try:
-            cliente = Clientes(self.ced1.get(),self.ced2.get(), self.ced3.get(),self.ced4.get(),self.ced5.get(),self.ced6.get(), self.ced7.get())
+            cliente = Clientes(self.ced1.get(), self.ced2.get(), self.ced3.get(),self.ced4.get(),self.ced5.get(),self.ced6.get(), self.ced7.get())
             if(cliente.nome != "" and cliente.cpf != "" and cliente.telefone != "" and\
                cliente.email != "" and cliente.endereco != "" and cliente.numero != "" and cliente.bairro != ""):
                 if(cliente.validarCPF() and cliente.validarNome()):
-                    banco2.addCliente(cliente)
-                    messagebox.showinfo("Log", "Cliente adicionado com sucesso!")
-                    self.ced1.delete(0, END)
-                    self.ced2.delete(0, END)
-                    self.ced3.delete(0, END)
-                    self.ced4.delete(0, END)
-                    self.ced5.delete(0, END)
-                    self.ced6.delete(0, END)
-                    self.ced7.delete(0, END)
+                    if(banco2.checkCpf(cliente.cpf) == True): #Checa se já existe uma ocorrência
+                        banco2.addCliente(cliente)
+                        messagebox.showinfo("Log", "Cliente adicionado com sucesso!")
+                        self.ced1.delete(0, END)
+                        self.ced2.delete(0, END)
+                        self.ced3.delete(0, END)
+                        self.ced4.delete(0, END)
+                        self.ced5.delete(0, END)
+                        self.ced6.delete(0, END)
+                        self.ced7.delete(0, END)
+                        print(cliente.cpf)
+                    else:
+                        messagebox.showinfo("Log", "CPF já cadastrado!")
                 else:
                     messagebox.showinfo("Log", "Dados inválidos!")
             else:
@@ -233,6 +241,126 @@ class main:
 
         self.cbtn2 = Button(top3, text='Salvar', width=10, command=self.adicionarCliente)
         self.cbtn2.grid(row=8,column=1)
+
+    def realizarBusca(self):
+        try:
+            cpf = self.bced1.get()
+            if(banco2.checkCpf(cpf) == False):
+                lista = banco2.buscarCpf(cpf)
+                self.bced2.insert(0, lista[1]) #Nome
+                self.bced3.insert(0, lista[3]) #Telefone
+                self.bced4.insert(0, lista[4]) #Email
+                self.bced5.insert(0, lista[5]) #Endereço
+                self.bced6.insert(0, lista[6]) #Número
+                self.bced7.insert(0, lista[7]) #Bairro
+                self.bced8.insert(0, lista[0]) #Id
+            else:
+                messagebox.showinfo("Log", "Cpf não cadastrado")
+        except:
+            print('Erro')
+
+    def excluirCliente(self):
+        try:
+            id = self.bced8.get()
+            banco2.deleteCliente(id)
+            messagebox.showinfo("Log", "Cliente removido")
+            self.bced1.delete(0, END)
+            self.bced2.delete(0, END)
+            self.bced3.delete(0, END)
+            self.bced4.delete(0, END)
+            self.bced5.delete(0, END)
+            self.bced6.delete(0, END)
+            self.bced7.delete(0, END)
+            self.bced8.delete(0, END)
+        except:
+            print('Erro')
+
+    def alterarCliente(self):
+        try:
+            id = self.bced8.get()
+            nome = self.bced2.get()
+            telefone = self.bced3.get()
+            email = self.bced4.get()
+            endereco = self.bced5.get()
+            numero = self.bced6.get()
+            bairro = self.bced7.get()
+            cpf = ""
+            cliente = Clientes(nome,cpf,telefone,email,endereco,numero,bairro)
+            banco2.updateCliente(id,cliente)
+            messagebox.showinfo("Log", "Cliente alterado com sucesso!")
+        except:
+            messagebox.showinfo("Log", "Erro ao alterar cliente!")
+
+
+
+    def topLevelBuscarClientes(self):
+        top4 = Toplevel()
+        top4.geometry("250x250+600+100")
+
+        self.bclb1 = Label(top4, text = 'Busca de cliente', font = ("Verdana", "10",  "bold"))
+        self.bclb1.grid(row=0, column=1)
+
+        self.bclb2 = Label(top4, text='CPF', font=('Calibri','10'))
+        self.bclb2.grid(row=1,column=0)
+
+        self.bced1 = Entry(top4) #Entry do cpf
+        self.bced1.grid(row=1,column=1)
+
+        self.bcbt1 = Button(top4, text='Buscar', font=('Calibri',10), command = self.realizarBusca)
+        self.bcbt1.grid(row=1, column=2)
+
+        self.bclb3 = Label(top4, text='NOME', font=('Calibri', '10'))
+        self.bclb3.grid(row=2, column=0)
+
+        self.bced2 = Entry(top4)  # Entry do nome
+        self.bced2.grid(row=2, column=1)
+
+        self.bclb4 = Label(top4, text='TELEFONE', font=('Calibri', '10'))
+        self.bclb4.grid(row=3, column=0)
+
+        self.bced3 = Entry(top4)  # Entry do telefone
+        self.bced3.grid(row=3, column=1)
+
+        self.bclb5 = Label(top4, text='EMAIL', font=('Calibri', '10'))
+        self.bclb5.grid(row=4, column=0)
+
+        self.bced4 = Entry(top4)  # Entry do Email
+        self.bced4.grid(row=4, column=1)
+
+        self.bclb6 = Label(top4, text='ENDEREÇO', font=('Calibri', '10'))
+        self.bclb6.grid(row=5, column=0)
+
+        self.bced5 = Entry(top4)  # Entry do endereco
+        self.bced5.grid(row=5, column=1)
+
+        self.bclb7 = Label(top4, text='NÚMERO', font=('Calibri', '10'))
+        self.bclb7.grid(row=6, column=0)
+
+        self.bced6 = Entry(top4)  # Entry do numero
+        self.bced6.grid(row=6, column=1)
+
+        self.bclb8 = Label(top4, text='BAIRRO', font=('Calibri', '10'))
+        self.bclb8.grid(row=7, column=0)
+
+        self.bced7 = Entry(top4)  # Entry do bairro
+        self.bced7.grid(row=7, column=1)
+
+        self.bclb9 = Label(top4, text='ID', font=('Calibri', '10'))
+        self.bclb9.grid(row=8, column=0)
+
+        self.bced8 = Entry(top4)  # Entry do bairro
+        self.bced8.grid(row=8, column=1)
+
+        self.bcbtn2 = Button(top4, text = 'Alterar', command=self.alterarCliente)
+        self.bcbtn2.grid(row=9, column=1)
+
+        self.bcbtn3= Button(top4, text='Excluir', command=self.excluirCliente)
+        self.bcbtn3.grid(row=9, column=0)
+
+
+
+
+
 
 
 
