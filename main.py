@@ -5,10 +5,13 @@ from tkinter import messagebox
 #Programa para gerenciamento de uma locadora
 from Filmes import Filmes
 from Clientes import Clientes
+from Pedidos import Pedidos
 from BancoClientes import BancoClientes
+from BancoPedidos import BancoPedidos
 
 banco = Banco()
 banco2 = BancoClientes()
+banco3 = BancoPedidos()
 
 
 class main:
@@ -16,6 +19,7 @@ class main:
         #Variavel para genero
         self.variablegen = StringVar(master)
         self.variablegen2 = StringVar(master) #Buscar filme(gênero)
+
 
         #Label Inicial
         self.lb1 = Label(master,text="Sistema Automatizado Locadora", font = ('Calibri' ,'15','bold'))
@@ -38,6 +42,10 @@ class main:
         #Botão de busca de clientes
         self.btnbuscarclientes = Button(master, text = 'Buscar clientes', font = ('Arial',10), width=25, command = self.topLevelBuscarClientes)
         self.btnbuscarclientes.pack()
+        
+
+
+
 
 
 
@@ -261,41 +269,57 @@ class main:
 
     def excluirCliente(self):
         try:
-            id = self.bced8.get()
-            banco2.deleteCliente(id)
-            messagebox.showinfo("Log", "Cliente removido")
-            self.bced1.delete(0, END)
-            self.bced2.delete(0, END)
-            self.bced3.delete(0, END)
-            self.bced4.delete(0, END)
-            self.bced5.delete(0, END)
-            self.bced6.delete(0, END)
-            self.bced7.delete(0, END)
-            self.bced8.delete(0, END)
+            cpf = self.bced1.get()
+            if (banco2.checkCpf(cpf) == False):
+                id = self.bced8.get()
+                banco2.deleteCliente(id)
+                messagebox.showinfo("Log", "Cliente removido")
+                self.bced1.delete(0, END)
+                self.bced2.delete(0, END)
+                self.bced3.delete(0, END)
+                self.bced4.delete(0, END)
+                self.bced5.delete(0, END)
+                self.bced6.delete(0, END)
+                self.bced7.delete(0, END)
+                self.bced8.delete(0, END)
+            else:
+                messagebox.showinfo("Log", "Cpf não encontrado!")
         except:
             print('Erro')
 
     def alterarCliente(self):
         try:
-            id = self.bced8.get()
-            nome = self.bced2.get()
-            telefone = self.bced3.get()
-            email = self.bced4.get()
-            endereco = self.bced5.get()
-            numero = self.bced6.get()
-            bairro = self.bced7.get()
-            cpf = ""
-            cliente = Clientes(nome,cpf,telefone,email,endereco,numero,bairro)
-            banco2.updateCliente(id,cliente)
-            messagebox.showinfo("Log", "Cliente alterado com sucesso!")
+            cpf = self.bced1.get()
+            if(banco2.checkCpf(cpf) == False):
+                id = self.bced8.get()
+                nome = self.bced2.get()
+                telefone = self.bced3.get()
+                email = self.bced4.get()
+                endereco = self.bced5.get()
+                numero = self.bced6.get()
+                bairro = self.bced7.get()
+                cpf = ""
+                cliente = Clientes(nome,cpf,telefone,email,endereco,numero,bairro)
+                banco2.updateCliente(id,cliente)
+                messagebox.showinfo("Log", "Cliente alterado com sucesso!")
+            else:
+                messagebox.showinfo("Log", "Cpf não encontrado!")
         except:
             messagebox.showinfo("Log", "Erro ao alterar cliente!")
+
+    def realizarPedidoBtn(self):
+        cpf = self.bced1.get()
+        if(banco2.checkCpf(cpf)==False):
+            self.topRealizarPedido()
+            self.cpfatual = cpf
+        else:
+            messagebox.showinfo("Log", "Cpf não encontrado!")
 
 
 
     def topLevelBuscarClientes(self):
         top4 = Toplevel()
-        top4.geometry("250x250+600+100")
+        top4.geometry("260x260+600+100")
 
         self.bclb1 = Label(top4, text = 'Busca de cliente', font = ("Verdana", "10",  "bold"))
         self.bclb1.grid(row=0, column=1)
@@ -352,68 +376,49 @@ class main:
         self.bced8.grid(row=8, column=1)
 
         self.bcbtn2 = Button(top4, text = 'Alterar', command=self.alterarCliente)
-        self.bcbtn2.grid(row=9, column=1)
+        self.bcbtn2.grid(row=9, column=0)
 
         self.bcbtn3= Button(top4, text='Excluir', command=self.excluirCliente)
-        self.bcbtn3.grid(row=9, column=0)
+        self.bcbtn3.grid(row=9, column=1)
+
+        self.bcbtn4 = Button(top4, text='Pedido', command=self.realizarPedidoBtn)
+        self.bcbtn4.grid(row=9, column=2)
 
 
+    def realizaPedido(self):
+        cpf = self.bced1.get()
+        if (banco2.checkCpf(cpf) == False and self.rpsb1.get() != '0'):
+            if(banco.getFilmeId(int(self.rped1.get()) != "Erro" and self.rped1.get()) != "Id não encontrado"):
+                pedido = Pedidos(cpf,int(self.rped1.get()),int(self.rpsb1.get()))
+                banco3.addPedido(pedido)
+                messagebox.showinfo("Log", "Pedido realizado com sucesso")
+            else:
+                messagebox.showinfo("Log", "Informe o id correto")
+        else:
+            messagebox.showinfo("Log", "Cpf não encontrado!")
 
 
+    def topRealizarPedido(self):
+        top5 = Toplevel()
+        top5.geometry("260x260+600+100")
+        fontepadrao = ('Calibri',10)
+        self.rplb0 = Label(top5, text='Realizar pedido', font=('Verdana',10, 'bold'))
+        self.rplb0.grid(row=0,column=1)
 
+        self.rplb1 = Label(top5, text='Id do filme', font = fontepadrao)
+        self.rplb1.grid(row=1, column=0)
 
+        self.rped1 = Entry(top5)
+        self.rped1.grid(row=1,column=1)
 
+        self.rplb2 = Label(top5, text='Dias', font=fontepadrao)
+        self.rplb2.grid(row=2,column=0)
 
+        self.rpsb1 = Spinbox(top5, from_=0, to=10)
+        self.rpsb1.grid(row=2,column=1)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.rpbtn1 = Button(top5, text='Realizar e gerar nota', command=self.realizaPedido)
+        self.rpbtn1.grid(row=3, column=1)
 
 
 
