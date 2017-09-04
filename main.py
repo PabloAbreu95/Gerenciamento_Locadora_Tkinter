@@ -21,6 +21,7 @@ class main:
         self.variablegen2 = StringVar(master) #Buscar filme(gênero)
 
 
+
         #Label Inicial
         self.lb1 = Label(master,text="Sistema Automatizado Locadora", font = ('Calibri' ,'15','bold'))
         self.lb1.pack()
@@ -42,7 +43,7 @@ class main:
         #Botão de busca de clientes
         self.btnbuscarclientes = Button(master, text = 'Buscar clientes', font = ('Arial',10), width=25, command = self.topLevelBuscarClientes)
         self.btnbuscarclientes.pack()
-        
+
 
 
 
@@ -85,91 +86,139 @@ class main:
             for item in lst:
                 self.bflbox1.insert(END, item)
 
-
     #Adicionar Filme
-    def topLevelAddFilme(self): #Janela top level criada(cadastro de filmes)
+    def topLevelAddFilme(self): #Janela top level criada(cadastro de filmes)  Pronto
         top = Toplevel()
         top.title("Novo filme")
-        top.geometry("250x200+100+100")
-        top['bg'] = 'blue'
+        fontpadrao = ('Verdana',8)
+
+        #Containers
+
+        self.container0 = Frame(top)
+        self.container0['pady'] = 10
+        self.container0.pack()
+
+        self.container1 = Frame(top)
+        self.container1['padx'] = 15
+        self.container1['pady'] = 5
+        self.container1.pack()
+
+        self.container2 = Frame(top)
+        self.container2['padx'] = 15
+        self.container2['pady'] = 5
+        self.container2.pack()
+
+        self.container3 = Frame(top)
+        self.container3['padx'] = 15
+        self.container3['pady'] = 5
+        self.container3.pack()
+
+        self.container4 = Frame(top)
+        self.container4['padx'] = 15
+        self.container4['pady'] = 5
+        self.container4.pack()
+
+        self.container5 = Frame(top)
+        self.container5['padx'] = 15
+        self.container5['pady'] = 10
+        self.container5.pack()
 
 
-        self.aflbl0 = Label(top, text = "Adicionar filme",font = ("Verdana", "10",  "bold",), bg = 'blue', fg = 'white')
-        self.aflbl0.grid(row=0,column=1)
+        self.aflbl0 = Label(self.container0, text = "Adicionar filme",font = ("Calibri", "13", "bold"))
+        self.aflbl0.pack()
 
-        self.aflb1 = Label(top, text="Nome", font =  ("Calibri", "12"), bg = 'blue',  fg = 'white')
-        self.aflb1.grid(row=1, sticky=W)
+        self.aflb1 = Label(self.container1, text="Nome", font =  fontpadrao, width=10)
+        self.aflb1.pack(side=LEFT)
 
-        self.afed1 = Entry(top)
-        self.afed1.grid(row=1, column=1)
+        self.afed1 = Entry(self.container1)
+        self.afed1.pack(side=RIGHT)
 
-        self.aflb2 = Label(top, text="Sinopse", font =  ("Calibri", "12"), bg = 'blue',  fg = 'white')
-        self.aflb2.grid(row=2, sticky=W)
+        self.aflb2 = Label(self.container2, text="Sinopse", font =  fontpadrao, width=10)
+        self.aflb2.pack(side=LEFT)
 
-        self.afed2 = Entry(top)
-        self.afed2.grid(row=2, column=1)
+        self.afed2 = Entry(self.container2)
+        self.afed2.pack(side=RIGHT)
 
-        self.aflb3 = Label(top, text="Genero", font =  ("Calibri", "12"), bg = 'blue',  fg = 'white')
-        self.aflb3.grid(row=3, sticky=W)
+        self.aflb3 = Label(self.container3, text="Genero", font =  fontpadrao, width=10)
+        self.aflb3.pack(side=LEFT)
 
         lst = ["Terror", "Ação", "Comédia", "Aventura", "Esportes", "Drama", "Documentário", "Animação"]
         self.variablegen.set("Comédia")
 
 
-        self.afed3 = OptionMenu(top,self.variablegen,*lst)    #Entrada de genero de filme
+        self.afed3 = OptionMenu(self.container3,self.variablegen,*lst)    #Entrada de genero de filme
         self.afed3['width'] = 13
         self.afed3['borderwidth'] = 2
-        self.afed3.grid(row=3, column=1)
+        self.afed3.pack(side=RIGHT)
 
-        self.aflb4 = Label(top, text="Lançamento", font =  ("Calibri", "12"), bg = 'blue',  fg = 'white')
-        self.aflb4.grid(row=4, sticky=W)
+        self.aflb4 = Label(self.container4, text="Lançamento", font =  fontpadrao, width=10)
+        self.aflb4.pack(side=LEFT)
 
-        self.afed4 = Entry(top)
-        self.afed4.grid(row=4, column=1)
+        self.afed4 = Entry(self.container4)
+        self.afed4.pack(side=RIGHT)
 
 
-        self.afbtnok = Button(top, text="Adicionar", command=  self.adicionarFilmeTop)
-        self.afbtnok.grid(row=5,column=1)
-
+        self.afbtnok = Button(self.container5, text="Adicionar", command=  self.adicionarFilmeTop, width=10)
+        self.afbtnok.pack()
 
     def topLevelBuscarFilme(self):  #Janela TOP-LEVEL criada(busca de filmes)
         top2 = Toplevel()
         top2.title('Buscar Filme')
-        top2.geometry("300x250+100+100")
+        fontpadrao = ('Verdana', 8)
 
 
-        self.bflb0 = Label(top2, text='Buscar Filme', font = ("Verdana", "10",  "bold"))
-        self.bflb0.grid(row=0, column=1)
+        #Containers
+        self.bfcontainer1 = Label(top2)
+        self.bfcontainer1['pady'] = 5
+        self.bfcontainer1.pack()
 
-        self.bflb1 = Label(top2, text='Nome', font =  ("Calibri", "12"))
-        self.bflb1.grid(row=1, sticky=W)
+        self.bfcontainer2 = Label(top2)
+        self.bfcontainer2.pack()
 
-        self.bfed1 = Entry(top2)
-        self.bfed1.grid(row=1, column=1)
 
-        self.bfbt1 = Button(top2, text='Buscar')
+        self.bfcontainer3 = Label(top2)
+        self.bfcontainer3.pack()
+
+        self.bfcontainer4 = Label(top2)
+        self.bfcontainer4.pack()
+
+        self.bfcontainer5 = Label(top2)
+        self.bfcontainer5.pack()
+
+
+
+        self.bflb0 = Label(self.bfcontainer1, text='Buscar Filme', font = ("Calibri", "13",  "bold"), width=10)
+        self.bflb0.pack()
+
+        self.bflb1 = Label(self.bfcontainer2, text='Nome', font =  fontpadrao, width = 10)
+        self.bflb1.pack(side = LEFT)
+
+        self.bfed1 = Entry(self.bfcontainer2, width=15)
+        self.bfed1.pack(side = LEFT)
+
+        self.bfbt1 = Button(self.bfcontainer2, text='Buscar')
         self.bfbt1.bind("<Button-1>", self.refresh)
-        self.bfbt1.grid(row=1, column=2)
+        self.bfbt1.pack(side = LEFT)
 
-        self.bflb2 = Label(top2, text='Gênero', font =  ("Calibri", "12"))
-        self.bflb2.grid(row=2, column=0)
+        self.bflb2 = Label(self.bfcontainer4, text='Gênero', font =  fontpadrao)
+        self.bflb2.pack(side = LEFT)
 
         lst2 = ["Todos", "Terror", "Ação", "Comédia", "Aventura", "Esportes", "Drama", "Documentário", "Animação"]
         self.variablegen2.set("Todos")
-        self.bfop1 = OptionMenu(top2,self.variablegen2,*lst2)
+        self.bfop1 = OptionMenu(self.bfcontainer4,self.variablegen2,*lst2)
         self.bfop1['width'] = 13
         self.bfop1['borderwidth'] = 2
-        self.bfop1.grid(row=2, column=1)
+        self.bfop1.pack(side = RIGHT)
 
 
 
 
-        self.bflbox1 = Listbox(top2)
+        self.bflbox1 = Listbox(self.bfcontainer5)
         lst3 = banco.getFilmeGenero(self.variablegen2.get())
         print(lst3)
         for item in lst3:
             self.bflbox1.insert(END, item)
-        self.bflbox1.grid(row=3, column=1)
+        self.bflbox1.pack()
 
     #Função para adicionar cliente
     def adicionarCliente(self):
@@ -200,55 +249,106 @@ class main:
 
     def topLevelClientes(self):
         top3 = Toplevel()
-        top3.geometry("250x250+600+100")
+        fontepadrao = ("Verdana", "8")
 
-        self.clb1 = Label(top3,text='Adicionar cliente',font = ("Verdana", "10",  "bold"))
-        self.clb1.grid(row=0, column=1)
 
-        self.clb2 = Label(top3, text='NOME', font =  ("Calibri", "12"))
-        self.clb2.grid(row=1, column=0)
+        #Containers
+        self.ccontainer1 = Frame(top3)
+        self.ccontainer1['pady'] = 2
+        self.ccontainer1.pack()
 
-        self.ced1 = Entry(top3) #Entry de nome
-        self.ced1.grid(row=1, column=1)
+        self.ccontainer2 = Frame(top3)
+        self.ccontainer2['padx'] = 10
+        self.ccontainer2['pady'] = 2
+        self.ccontainer2.pack()
 
-        self.clb2 = Label(top3, text='CPF', font =  ("Calibri", "12"))
-        self.clb2.grid(row=2, column=0)
+        self.ccontainer3 = Frame(top3)
+        self.ccontainer3['padx'] = 10
+        self.ccontainer3['pady'] = 2
+        self.ccontainer3.pack()
 
-        self.ced2 = Entry(top3) #Entry de cpf
-        self.ced2.grid(row=2, column=1)
+        self.ccontainer4 = Frame(top3)
+        self.ccontainer4['padx'] = 10
+        self.ccontainer4['pady'] = 2
+        self.ccontainer4.pack()
 
-        self.clb3 = Label(top3, text='TELEFONE')
-        self.clb3.grid(row=3,column=0)
+        self.ccontainer5 = Frame(top3)
+        self.ccontainer5['padx'] = 10
+        self.ccontainer5['pady'] = 2
+        self.ccontainer5.pack()
 
-        self.ced3 = Entry(top3) #Entry de telefone
-        self.ced3.grid(row=3,column=1)
+        self.ccontainer6 = Frame(top3)
+        self.ccontainer6['padx'] = 10
+        self.ccontainer6['pady'] = 2
+        self.ccontainer6.pack()
 
-        self.clb4 = Label(top3, text='EMAIL')
-        self.clb4.grid(row=4, column=0)
+        self.ccontainer7 = Frame(top3)
+        self.ccontainer7['padx'] = 10
+        self.ccontainer7['pady'] = 2
+        self.ccontainer7.pack()
 
-        self.ced4 = Entry(top3) #Entry de email
-        self.ced4.grid(row=4, column=1)
+        self.ccontainer8 = Frame(top3)
+        self.ccontainer8['padx'] = 10
+        self.ccontainer8['pady'] = 2
+        self.ccontainer8.pack()
 
-        self.clb5 = Label(top3, text='ENDEREÇO')
-        self.clb5.grid(row=5, column=0)
+        self.ccontainer9 = Frame(top3)
+        self.ccontainer9['padx'] = 10
+        self.ccontainer9['pady'] = 2
+        self.ccontainer9.pack()
 
-        self.ced5 = Entry(top3)  # Entry de endereço
-        self.ced5.grid(row=5, column=1)
+        self.ccontainer10 = Frame(top3)
+        self.ccontainer10['padx'] = 10
+        self.ccontainer10['pady'] = 2
+        self.ccontainer10.pack()
 
-        self.clb6 = Label(top3, text='NÚMERO')
-        self.clb6.grid(row=6, column=0)
+        self.clb1 = Label(self.ccontainer1,text='Adicionar cliente',font = ("Calibri", "13",  "bold"))
+        self.clb1.pack()
 
-        self.ced6 = Entry(top3)  # Entry de Numero
-        self.ced6.grid(row=6, column=1)
+        self.clb2 = Label(self.ccontainer2, text='Nome', font =  fontepadrao, width = 10)
+        self.clb2.pack(side = LEFT)
 
-        self.clb7 = Label(top3, text='BAIRRO')
-        self.clb7.grid(row=7, column=0)
+        self.ced1 = Entry(self.ccontainer2, width = 25) #Entry de nome
+        self.ced1.pack(side = RIGHT)
 
-        self.ced7 = Entry(top3)  # Entry de email
-        self.ced7.grid(row=7, column=1)
+        self.clb2 = Label(self.ccontainer3, text='Cpf', font =  fontepadrao, width = 10)
+        self.clb2.pack(side = LEFT)
 
-        self.cbtn2 = Button(top3, text='Salvar', width=10, command=self.adicionarCliente)
-        self.cbtn2.grid(row=8,column=1)
+        self.ced2 = Entry(self.ccontainer3, width = 25) #Entry de cpf
+        self.ced2.pack(side = RIGHT)
+
+        self.clb3 = Label(self.ccontainer4, text='Telefone', font = fontepadrao, width = 10)
+        self.clb3.pack(side = LEFT)
+
+        self.ced3 = Entry(self.ccontainer4, width = 25) #Entry de telefone
+        self.ced3.pack(side = RIGHT)
+
+        self.clb4 = Label(self.ccontainer5, text='Email', font = fontepadrao, width = 10)
+        self.clb4.pack(side = LEFT)
+
+        self.ced4 = Entry(self.ccontainer5, width = 25) #Entry de email
+        self.ced4.pack(side = RIGHT)
+
+        self.clb5 = Label(self.ccontainer7, text='Endereço', font = fontepadrao, width = 10)
+        self.clb5.pack(side = LEFT)
+
+        self.ced5 = Entry(self.ccontainer7, width = 25)  # Entry de endereço
+        self.ced5.pack(side = RIGHT)
+
+        self.clb6 = Label(self.ccontainer8, text='Número', font = fontepadrao, width = 10)
+        self.clb6.pack(side = LEFT)
+
+        self.ced6 = Entry(self.ccontainer8, width = 25)  # Entry de Numero
+        self.ced6.pack(side = RIGHT)
+
+        self.clb7 = Label(self.ccontainer9, text='Bairro', font = fontepadrao, width = 10)
+        self.clb7.pack(side = LEFT)
+
+        self.ced7 = Entry(self.ccontainer9, width = 25)  # Entry de email
+        self.ced7.pack(side = RIGHT)
+
+        self.cbtn2 = Button(self.ccontainer10, text='Salvar', width=10, command=self.adicionarCliente, font = fontepadrao)
+        self.cbtn2.pack()
 
     def realizarBusca(self):
         try:
@@ -394,8 +494,10 @@ class main:
                 messagebox.showinfo("Log", "Pedido realizado com sucesso")
             else:
                 messagebox.showinfo("Log", "Informe o id correto")
+        elif(self.rpsb1.get() == '0'):
+            messagebox.showinfo("Log", "Coloque um número de dias")
         else:
-            messagebox.showinfo("Log", "Cpf não encontrado!")
+            messagebox.showinfo("Log", "Cpf incorreto")
 
 
     def topRealizarPedido(self):
@@ -417,7 +519,7 @@ class main:
         self.rpsb1 = Spinbox(top5, from_=0, to=10)
         self.rpsb1.grid(row=2,column=1)
 
-        self.rpbtn1 = Button(top5, text='Realizar e gerar nota', command=self.realizaPedido)
+        self.rpbtn1 = Button(top5, text='Confirmar', command=self.realizaPedido)
         self.rpbtn1.grid(row=3, column=1)
 
 
@@ -427,6 +529,6 @@ class main:
 
 root = Tk()
 root.wm_title("Sistema Locadora")
-root.geometry("300x300+100+100")
+root.geometry("800x600+250+60")
 main(root)
 root.mainloop()
